@@ -21,6 +21,13 @@ public class Enunciado {
         this.nivel = nivel;
         this.ruta = ruta;
     }
+    
+    public Enunciado() {
+        this.id = 0;
+        this.descripcion = "";
+        this.nivel = nivel.ALTA;
+        this.ruta = "";
+    }
 
     public int getId() {
         return id;
