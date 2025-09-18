@@ -11,4 +11,5 @@ package model;
  */
 public enum Dificultad {
     BAJA,MEDIA,ALTA    
+    
 }
