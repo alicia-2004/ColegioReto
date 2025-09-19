@@ -10,8 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -36,7 +34,8 @@ public class ImplementacionDB implements ClaseDAO{
 	//Sentencias SQL
     
     final String SQLMOSTRARENUNCIADOS = "SELECT DESCRIPTION_S FROM STATEMENT";
-    final String SQLAÑADIRUNIDADDIDACTICA ="SELECT INTO TEACHINGUNIT VALUES(?,?,?,?,?)";
+    final String SQLAÑADIRUNIDADDIDACTICA ="INSERT INTO TEACHINGUNIT (ACRONYM, TITLE, ASSESSMENT, DESCRIPTION_T) VALUES(?,?,?,?)";
+    final String SQLINSERTARCONVOCATORIAEXAMEN ="INSERT INTO EXAMCALL VALUES(?,?,?,?,?)";
 
     private void openConnection() {
 	try {
@@ -50,7 +49,7 @@ public class ImplementacionDB implements ClaseDAO{
     }
 
     public ImplementacionDB() {
-	this.configFile = ResourceBundle.getBundle("modelo.configClase");
+	this.configFile = ResourceBundle.getBundle("configClase");
 	this.driverBD = this.configFile.getString("Driver");
 	this.urlBD = this.configFile.getString("Conn");
 	this.userBD = this.configFile.getString("DBUser");
@@ -60,7 +59,7 @@ public class ImplementacionDB implements ClaseDAO{
     @Override
     public Map <String,Enunciado> mostrarEnunciados (){
 	ResultSet rs = null;
-	Map<String,Enunciado> equipos = new TreeMap<>();
+	Map<String,Enunciado> enunciados = new TreeMap<>();
 	Enunciado en;
 		
 	this.openConnection();
@@ -72,7 +71,7 @@ public class ImplementacionDB implements ClaseDAO{
             while (rs.next()) {
 		en = new Enunciado();
 		en.setDescripcion(rs.getString("DESCRIPTION_S"));
-		equipos.put(en.getDescripcion(), en);
+		enunciados.put(en.getDescripcion(), en);
             }
             rs.close();
             stmt.close();
@@ -80,24 +79,22 @@ public class ImplementacionDB implements ClaseDAO{
             } catch (SQLException e) {
 			System.out.println("Error al obtener los enunciados: " + e.getMessage());
             }
-            return equipos;
+            return enunciados;
     }
     
     @Override
-    public boolean insertarUnidad (int id,String acronimo,String calificacion,String evaluacion,String descripcion) {
+    public boolean insertarUnidad (String acronimo,String titulo, String evaluacion,String descripcion) {
 	boolean realizado=false;
 		
 	this.openConnection();
 
 	try {
             stmt = con.prepareStatement(SQLAÑADIRUNIDADDIDACTICA);
-            stmt.setInt(1, id);
-            stmt.setString(2, acronimo);
-            stmt.setString(3, calificacion);
-            stmt.setString(4, evaluacion);
-            stmt.setString(5, descripcion);
-
-			
+            stmt.setString(1, acronimo);
+            stmt.setString(2, titulo);
+            stmt.setString(3, evaluacion);
+            stmt.setString(4, descripcion);
+	
             if (stmt.executeUpdate() > 0) {
 		realizado = true;
             }
@@ -111,19 +108,19 @@ public class ImplementacionDB implements ClaseDAO{
             return realizado;
     }
 
+    @Override
     public boolean insertarConvocatoriaExamen (String convocatoria,String descripcion,Date fecha,String curso, int idE) {
 	boolean realizado=false;
 		
 	this.openConnection();
 
 	try {
-            stmt = con.prepareStatement(SQLAÑADIRUNIDADDIDACTICA);
+            stmt = con.prepareStatement(SQLINSERTARCONVOCATORIAEXAMEN);
             stmt.setString(1, convocatoria);
             stmt.setString(2, descripcion);
             stmt.setDate(3, (java.sql.Date) fecha);
             stmt.setString(4, curso);
             stmt.setInt(5, idE);
-
 			
             if (stmt.executeUpdate() > 0) {
 		realizado = true;

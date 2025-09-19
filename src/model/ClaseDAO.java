@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -13,7 +14,9 @@ import java.util.Map;
  */
 public interface ClaseDAO {
     
-    public boolean insertarUnidad (int id,String acronimo,String calificacion,String evaluacion,String descripcion);
+    public boolean insertarUnidad (String acronimo,String calificacion,String evaluacion,String descripcion);
     
     public Map <String,Enunciado> mostrarEnunciados ();
+    
+     public boolean insertarConvocatoriaExamen (String convocatoria,String descripcion,Date fecha,String curso, int idE);
 }

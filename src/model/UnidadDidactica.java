@@ -12,15 +12,19 @@ package model;
 public class UnidadDidactica {
     private int id;
     private String acronimo;
+    private String titulo;
     private String evaluacion;
     private String descripcion;
 
-    public UnidadDidactica(int id, String acronimo, String evaluacion, String descripcion) {
+    public UnidadDidactica(int id, String acronimo, String titulo, String evaluacion, String descripcion) {
         this.id = id;
         this.acronimo = acronimo;
+        this.titulo = titulo;
         this.evaluacion = evaluacion;
         this.descripcion = descripcion;
     }
+
+    
 
     public int getId() {
         return id;
@@ -53,6 +57,15 @@ public class UnidadDidactica {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+    
 
     @Override
     public String toString() {
