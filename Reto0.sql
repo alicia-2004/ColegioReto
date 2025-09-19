@@ -33,3 +33,32 @@ COURSE VARCHAR(50),
 ID_S INT,
 FOREIGN KEY (ID_S) REFERENCES STATEMENT (ID_S)
 );
+
+
+INSERT INTO TEACHINGUNIT VALUES
+(1, 'DAM1', 'Multiplatform Apps', 'Final Exam', 'First-year DAM'),
+(2, 'DAM2', 'Advanced Programming', 'Project', 'Second-year DAM'),
+(3, 'WEB1', 'Web Development', 'Continuous', 'First-year Web');
+
+-- STATEMENT
+INSERT INTO STATEMENT VALUES
+(1, 'SQL Queries', 'HIGH', TRUE, '/units/sql'),
+(2, 'Java OOP', 'AVERAGE', TRUE, '/units/java'),
+(3, 'HTML Basics', 'LOW', FALSE, '/units/html');
+
+-- TEACHINGUNIT_STATEMENT
+INSERT INTO TEACHINGUNIT_STATEMENT VALUES
+(1, 1),  -- DAM1 → SQL
+(2, 2),  -- DAM2 → Java OOP
+(3, 3),  -- WEB1 → HTML
+(1, 3);  -- DAM1 → HTML
+-- EXAMCALL
+INSERT INTO EXAMCALL VALUES
+('CALL2025-01', 'January exam', '2025-01-20', '2024/2025', 1),
+('CALL2025-02', 'February exam', '2025-02-15', '2024/2025', 2),
+('CALL2025-03', 'March exam', '2025-03-10', '2024/2025', 3);
+
+SELECT * FROM teachingunit;
+SELECT * FROM examcall;
+SELECT * FROM teachingunit_statement;
+SELECT * FROM statement;
