@@ -14,19 +14,20 @@ public class Enunciado {
     private String descripcion;
     private Dificultad nivel;
     private String ruta;
+        
+    public Enunciado() {
+        this.id = 0;
+        this.descripcion = "";
+        this.nivel = nivel.ALTA;
+        this.ruta = "";
+    }
+
 
     public Enunciado(int id, String descripcion, Dificultad nivel, String ruta) {
         this.id = id;
         this.descripcion = descripcion;
         this.nivel = nivel;
         this.ruta = ruta;
-    }
-    
-    public Enunciado() {
-        this.id = 0;
-        this.descripcion = "";
-        this.nivel = nivel.ALTA;
-        this.ruta = "";
     }
 
     public int getId() {

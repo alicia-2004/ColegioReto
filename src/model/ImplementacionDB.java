@@ -10,6 +10,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
@@ -58,7 +61,7 @@ public class ImplementacionDB implements ClaseDAO{
     public Map <String,Enunciado> mostrarEnunciados (){
 	ResultSet rs = null;
 	Map<String,Enunciado> equipos = new TreeMap<>();
-	Enunciado e;
+	Enunciado en;
 		
 	this.openConnection();
 		
@@ -67,9 +70,9 @@ public class ImplementacionDB implements ClaseDAO{
             rs = stmt.executeQuery();
 			
             while (rs.next()) {
-		e = new Enunciado ();
-		e.setDescripcion(rs.getString("DESCRIPTION_S"));
-		equipos.put(e.getDescripcion(), e);
+		en = new Enunciado();
+		en.setDescripcion(rs.getString("DESCRIPTION_S"));
+		equipos.put(en.getDescripcion(), en);
             }
             rs.close();
             stmt.close();
@@ -106,5 +109,32 @@ public class ImplementacionDB implements ClaseDAO{
             }
 		
             return realizado;
-    }    
+    }
+
+    public boolean insertarConvocatoriaExamen (String convocatoria,String descripcion,Date fecha,String curso, int idE) {
+	boolean realizado=false;
+		
+	this.openConnection();
+
+	try {
+            stmt = con.prepareStatement(SQLAÑADIRUNIDADDIDACTICA);
+            stmt.setString(1, convocatoria);
+            stmt.setString(2, descripcion);
+            stmt.setDate(3, (java.sql.Date) fecha);
+            stmt.setString(4, curso);
+            stmt.setInt(5, idE);
+
+			
+            if (stmt.executeUpdate() > 0) {
+		realizado = true;
+            }
+
+            stmt.close();
+            con.close();
+            } catch (SQLException e) {
+			System.out.println("Error al añadir convocatoria: " + e.getMessage());
+            }
+		
+            return realizado;
+    }
 }
