@@ -1,4 +1,4 @@
-package utilidades;
+package utilities;
 
 import java.io.BufferedReader;
 import java.io.EOFException;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-public class Utilidades {
+public class Utilities {
 	public static int calculoFichero(File fich){
 	 	int cont=0;
 	 	if (fich.exists()){

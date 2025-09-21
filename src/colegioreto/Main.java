@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package colegioreto;
 
-import model.Controller;
-import utilidades.Utilidades;
+import controller.Controller;
+import utilities.Utilities;
 
 /**
  *
@@ -18,7 +13,7 @@ public class Main {
         int op;
         System.out.println("------------------------------------");
         System.out.println("1. Create a teaching unit (Unit) and an exam session (Session).");
-        System.out.println("2. Create an exam statement by adding the teaching units that it will refer to. The session for\n"
+        System.out.println("2. Create an exam statement by adding the teaching units it will refer to. The session for\n"
                 + "which it is created will also be associated\n"
                 + "with this statement.");
         System.out.println("3. Consult the exam statements in which a\n"
@@ -30,45 +25,48 @@ public class Main {
         System.out.println("6. Assign a statement to a session.");
         System.out.println("7. Exit");
         System.out.println("------------------------------------");
-        op = Utilidades.leerInt(1, 7);
+        op = Utilities.leerInt(1, 7);
         return op;
     }
 
-    public static void agregarUnidadDidactica(Controller cont) {
-        String acronimo, titulo, evaluacion, descripcion;
-        System.out.println("Inserte el acornimo que se usara:");
-        acronimo = Utilidades.introducirCadena();
-        System.out.println("Inserte el titulo que se usara: ");
-        titulo = Utilidades.introducirCadena();
-        System.out.println("Inserte la evaluacion a la que pertenecera: ");
-        evaluacion = Utilidades.introducirCadena();
-        System.out.println("Inserte una descripcion: ");
-        descripcion = Utilidades.introducirCadena();
+    public static void addTeachingUnit(Controller cont) {
+        String acronym, title, assessment, description;
+        System.out.println("Insert the acronym to be used:");
+        acronym = Utilities.introducirCadena();
+        System.out.println("Insert the title to be used: ");
+        title = Utilities.introducirCadena();
+        System.out.println("Insert the assessment it belongs to: ");
+        assessment = Utilities.introducirCadena();
+        System.out.println("Insert a description: ");
+        description = Utilities.introducirCadena();
 
-        cont.insertarUnidad(acronimo, titulo, evaluacion, descripcion);
+        cont.insertTeachingUnit(acronym, title, assessment, description);
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
         int op;
         Controller cont = new Controller();
         do {
             switch (op = menu()) {
                 case 1:
-                    agregarUnidadDidactica(cont);
+                    addTeachingUnit(cont);
                     break;
                 case 2:
+                    // to implement
                     break;
                 case 3:
+                    // to implement
                     break;
                 case 4:
+                    // to implement
                     break;
                 case 5:
+                    // to implement
+                    break;
+                case 6:
+                    // to implement
                     break;
             }
         } while (op != 7);
     }
-
 }

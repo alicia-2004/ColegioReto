@@ -9,7 +9,8 @@ package model;
  *
  * @author Deusto
  */
-public enum Dificultad {
-    BAJA,MEDIA,ALTA    
-    
+public enum Difficulty {
+    LOW,
+    MEDIUM,
+    HIGH
 }
