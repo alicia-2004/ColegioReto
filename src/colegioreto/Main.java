@@ -30,7 +30,7 @@ public class Main {
         System.out.println("6. Assign a statement to a session.");
         System.out.println("7. Exit");
         System.out.println("------------------------------------");
-        op = Utilidades.leerInt(1, 5);
+        op = Utilidades.leerInt(1, 7);
         return op;
     }
 
@@ -68,7 +68,7 @@ public class Main {
                 case 5:
                     break;
             }
-        } while (op != 5);
+        } while (op != 7);
     }
 
 }

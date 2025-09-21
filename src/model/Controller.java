@@ -23,8 +23,8 @@ public class Controller {
         return dao.mostrarEnunciados();
     }
     
-    public boolean insertarUnidad (String acronimo,String calificacion,String evaluacion,String descripcion){
-        return dao.insertarUnidad(acronimo,calificacion,evaluacion,descripcion);
+    public boolean insertarUnidad (String acronimo, String titulo, String evaluacion, String descripcion){
+        return dao.insertarUnidad(acronimo, titulo, evaluacion, descripcion);
     }
     
     public boolean insertarConvocatoriaExamen(String convocatoria,String descripcion,Date fecha,String curso, int idE){
