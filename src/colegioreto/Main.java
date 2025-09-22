@@ -12,20 +12,16 @@ public class Main {
     public static int menu() {
         int op;
         System.out.println("------------------------------------");
-        System.out.println("1. Create a teaching unit (Unit) and an exam session (Session).");
-        System.out.println("2. Create an exam statement by adding the teaching units it will refer to. The session for\n"
-                + "which it is created will also be associated\n"
-                + "with this statement.");
-        System.out.println("3. Consult the exam statements in which a\n"
-                + "specific teaching unit is covered.");
-        System.out.println("4. Consult in which sessions a specific\n"
-                + "statement has been used.");
-        System.out.println("5. View the text document associated with a\n"
-                + "statement.");
-        System.out.println("6. Assign a statement to a session.");
-        System.out.println("7. Exit");
+        System.out.println("1. Create a teaching unit (Unit) .");
+        System.out.println("2. Create an exam session (examCall).");
+        System.out.println("3. Create an STATEMENT by adding the UNITS it will refer to. The EXAMCALL for which it is created will also be associated.");
+        System.out.println("4. Consult the STATEMENTS in which a specific UNIT is covered.");
+        System.out.println("5. Consult in which EXAMCALL a specific STATEMENTS has been used.");
+        System.out.println("6. View the text document associated with a STATEMENTS.");
+        System.out.println("7. Assign a STATEMENTS to a EXAMCALL.");
+        System.out.println("8. Exit");
         System.out.println("------------------------------------");
-        op = Utilities.leerInt(1, 7);
+        op = Utilities.leerInt(1, 8);
         return op;
     }
 
