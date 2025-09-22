@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.TreeMap;
@@ -101,9 +101,9 @@ public class DBImplementation implements ClassDAO {
         
         return success;
     }
-
-    @Override
-    public boolean insertExamCall(String call, String description, Date date, String course, int idE) {
+    
+        @Override
+    public boolean insertExamCall(String call, String description, LocalDate date, String course, int idE) {
         boolean success = false;
         
         this.openConnection();
@@ -112,7 +112,7 @@ public class DBImplementation implements ClassDAO {
             stmt = con.prepareStatement(SQLINSERTEXAMCALL);
             stmt.setString(1, call);
             stmt.setString(2, description);
-            stmt.setDate(3, (java.sql.Date) date);
+            stmt.setDate(3, java.sql.Date.valueOf(date));
             stmt.setString(4, course);
             stmt.setInt(5, idE);
             

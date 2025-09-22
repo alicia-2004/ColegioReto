@@ -1,6 +1,7 @@
 package colegioreto;
 
 import controller.Controller;
+import java.time.LocalDate;
 import utilities.Utilities;
 
 /**
@@ -12,8 +13,8 @@ public class Main {
     public static int menu() {
         int op;
         System.out.println("------------------------------------");
-        System.out.println("1. Create a teaching unit (Unit) .");
-        System.out.println("2. Create an exam session (examCall).");
+        System.out.println("1. Create a teaching UNITS .");
+        System.out.println("2. Create an EXAMCALL (session).");
         System.out.println("3. Create an STATEMENT by adding the UNITS it will refer to. The EXAMCALL for which it is created will also be associated.");
         System.out.println("4. Consult the STATEMENTS in which a specific UNIT is covered.");
         System.out.println("5. Consult in which EXAMCALL a specific STATEMENTS has been used.");
@@ -38,6 +39,27 @@ public class Main {
 
         cont.insertTeachingUnit(acronym, title, assessment, description);
     }
+    
+    public static void addExamCall (Controller cont){
+        
+        String call, description, course;
+        LocalDate date;
+        int id_s;
+        
+        System.out.println("Insert the exam call (session):");
+        call = Utilities.introducirCadena();
+        System.out.println("Insert the description: ");
+        description = Utilities.introducirCadena();
+        System.out.println("Insert the date (dd/MM/yyyy): ");
+        date = Utilities.leerFechaDMA();
+        System.out.println("Insert a course: ");
+        course = Utilities.introducirCadena();
+        System.out.println("Insert the id associated with a statement: ");
+        id_s = Utilities.leerInt(0, 1000);
+        
+        cont.insertExamCall(call, description, date, course, id_s);
+        
+    }
 
     public static void main(String[] args) {
         int op;
@@ -48,7 +70,7 @@ public class Main {
                     addTeachingUnit(cont);
                     break;
                 case 2:
-                    // to implement
+                    addExamCall(cont);
                     break;
                 case 3:
                     // to implement

@@ -5,7 +5,7 @@
  */
 package model;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Map;
 
 /**
@@ -18,5 +18,5 @@ public interface ClassDAO {
 
     Map<String, Statement> showStatements();
 
-    boolean insertExamCall(String call, String description, Date date, String course, int idE);
+    boolean insertExamCall(String call, String description, LocalDate date, String course, int idE);
 }

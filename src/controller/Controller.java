@@ -10,6 +10,7 @@ package controller;
  * @author acer
  */
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Map;
 import model.ClassDAO;
@@ -29,7 +30,7 @@ public class Controller {
         return dao.insertTeachingUnit(acronym, title, assessment, description);
     }
     
-    public boolean insertExamCall(String call, String description, Date date, String course, int idE) {
+    public boolean insertExamCall(String call, String description, LocalDate date, String course, int idE) {
         return dao.insertExamCall(call, description, date, course, idE);
     }
 }
