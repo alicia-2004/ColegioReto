@@ -29,6 +29,7 @@ public class DBImplementation implements ClassDAO {
     final String SQLSHOWSTATEMENTS = "SELECT DESCRIPTION_S FROM STATEMENT";
     final String SQLADDTEACHINGUNIT = "INSERT INTO TEACHINGUNIT (ACRONYM, TITLE, ASSESSMENT, DESCRIPTION_T) VALUES(?,?,?,?)";
     final String SQLINSERTEXAMCALL = "INSERT INTO EXAMCALL VALUES(?,?,?,?,?)";
+    final String SQL_CALL ="SELECT * FROM EXAMCALL WHERE ID_S = ?";
 
     private void openConnection() {
         try {
@@ -126,5 +127,67 @@ public class DBImplementation implements ClassDAO {
         }
         
         return success;
+    }
+    
+    public Map <String, ExamCall> consultCalls (int id_S) {
+        ResultSet rs = null;
+	Map<String,ExamCall> calls = new TreeMap<>();
+	ExamCall call;
+		
+	this.openConnection();
+		
+	try {
+            stmt = con.prepareStatement(SQL_CALL);
+            stmt.setInt(1, id_S); 
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+		call = new ExamCall();
+		call.setCall(rs.getString("CALL_EXAM"));
+		call.setDescription(rs.getString("DESCRIPTION"));
+		call.setDate(rs.getDate("DATE_EXAM").toLocalDate());
+		call.setCourse(rs.getString("COURSE"));
+                call.setIdE(rs.getInt("ID_S"));
+		calls.put(call.getCall(), call);
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+            } catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+            }
+            return calls;
+    }
+    
+    public Map <Integer, Statement> viewTextDocument (int id_S) {
+        ResultSet rs = null;
+	Map<Integer,Statement> documents = new TreeMap<>();
+	Statement textDocument;
+		
+	this.openConnection();
+		
+	try {
+            stmt = con.prepareStatement(SQL_CALL);
+            stmt.setInt(1, id_S); 
+            rs = stmt.executeQuery();
+
+            while (rs.next()) {
+		textDocument = new Statement();
+		textDocument.setId(rs.getInt("ID_S"));
+		textDocument.setDescription(rs.getString("DESCRIPTION"));
+		textDocument.setAvailable(rs.getBoolean("AVAILABLE"));
+                textDocument.setLevel(Difficulty.valueOf(rs.getString("DIFFICULTY")));
+		
+		documents.put(textDocument.getId(), textDocument);
+            }
+
+            rs.close();
+            stmt.close();
+            con.close();
+            } catch (SQLException e) {
+			System.out.println("Error: " + e.getMessage());
+            }
+            return documents;
     }
 }

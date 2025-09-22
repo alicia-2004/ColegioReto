@@ -26,6 +26,14 @@ public class ExamCall {
         this.idE = idE;
     }
 
+    public ExamCall() {
+        this.call = "";
+        this.description = "";
+        this.date = null;
+        this.course = "";
+        this.idE = 0;
+    }
+    
     public String getCall() {
         return call;
     }
