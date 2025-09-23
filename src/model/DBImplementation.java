@@ -32,6 +32,8 @@ public class DBImplementation implements ClassDAO {
     final String SQL_CALL ="SELECT * FROM EXAMCALL WHERE ID_S = ?";
     final String SQL_VIEWTEXT = "SELECT DESCRIPTION_S FROM STATEMENT WHERE ID_S = ?";
     final String SQL_INSERT = "INSERT INTO EXAMCALL (CALL_EXAM, DESCRIPTION_EXAM, DATE_EXAM, COURSE, ID_S) VALUES (?, ?, ?, ?, ?)";
+    final String SQL_CREATESTATEMENT = "INSERT INTO STATEMENT (ID_S,DESCRIPTION_S,LEVEL_S,AVAILABLE,ROUTE) VALUES (?,?,?,?,?)";
+    final String SQL_ADDUNIT = "INSERT INTO TEACHINGUNIT_STATEMENT (ID_T,ID_S) VALUES (?,?)";
 
     private void openConnection() {
         try {
@@ -125,7 +127,7 @@ public class DBImplementation implements ClassDAO {
             stmt.close();
             con.close();
         } catch (SQLException e) {
-            System.out.println("Error adding exam call: " + e.getMessage());
+            System.out.println("Error adding a exam call: " + e.getMessage());
         }
         
         return success;
@@ -157,7 +159,7 @@ public class DBImplementation implements ClassDAO {
             stmt.close();
             con.close();
             } catch (SQLException e) {
-			System.out.println("Error: " + e.getMessage());
+			System.out.println("Error to consult calls: " + e.getMessage());
             }
             return calls;
     }
@@ -181,7 +183,7 @@ public class DBImplementation implements ClassDAO {
         con.close();
 
     } catch (SQLException e) {
-        System.out.println("Error: " + e.getMessage());
+        System.out.println("Error to view a text document: " + e.getMessage());
     }
 
     return description;
@@ -211,5 +213,52 @@ public class DBImplementation implements ClassDAO {
     }
 
     return success;
+    }
+    
+    public boolean createStatement(int id, String desc, Difficulty level, boolean available, String path) {
+       boolean success = false;
+    this.openConnection(); 
+
+    try {
+        stmt = con.prepareStatement(SQL_CREATESTATEMENT);
+        stmt.setInt(1, id);
+        stmt.setString(2, desc);
+        stmt.setString(3, level.name());
+        stmt.setBoolean(4, available);
+        stmt.setString(5, path);
+
+        if (stmt.executeUpdate() > 0) {
+            success = true;
+        }
+
+        stmt.close();
+        con.close();
+    } catch (SQLException e) {
+        System.out.println("Error creating a statement: " + e.getMessage());
+    }
+
+    return success; 
+    }
+    
+    public boolean addUnit(int id_s,int id_t) {
+       boolean success = false;
+    this.openConnection(); 
+
+    try {
+        stmt = con.prepareStatement(SQL_ADDUNIT);
+        stmt.setInt(1, id_s);
+        stmt.setInt(2, id_t);
+
+        if (stmt.executeUpdate() > 0) {
+            success = true;
+        }
+
+        stmt.close();
+        con.close();
+    } catch (SQLException e) {
+        System.out.println("Error adding a unit to a statement: " + e.getMessage());
+    }
+
+    return success; 
     }
 }
