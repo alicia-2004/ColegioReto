@@ -57,8 +57,3 @@ INSERT INTO EXAMCALL VALUES
 ('CALL2025-01', 'January exam', '2025-01-20', '2024/2025', 1),
 ('CALL2025-02', 'February exam', '2025-02-15', '2024/2025', 2),
 ('CALL2025-03', 'March exam', '2025-03-10', '2024/2025', 3);
-
-SELECT * FROM teachingunit;
-SELECT * FROM examcall;
-SELECT * FROM teachingunit_statement;
-SELECT * FROM statement;

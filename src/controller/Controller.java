@@ -22,8 +22,8 @@ public class Controller {
     
     ClassDAO dao = new DBImplementation();
     
-    public Map<String, Statement> showStatements() {
-        return dao.showStatements();
+    public Map<String, Statement> showStatements(int idu) {
+        return dao.showStatements(idu);
     }
     
     public boolean insertTeachingUnit(String acronym, String title, String assessment, String description) {

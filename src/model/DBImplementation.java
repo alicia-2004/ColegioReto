@@ -15,6 +15,7 @@ import java.util.TreeMap;
  * @author acer
  */
 public class DBImplementation implements ClassDAO {
+
     private Connection con;
     private PreparedStatement stmt;
 
@@ -26,10 +27,11 @@ public class DBImplementation implements ClassDAO {
     private String passwordDB;
 
     // SQL statements
-    final String SQLSHOWSTATEMENTS = "SELECT DESCRIPTION_S FROM STATEMENT";
+    final String SQLSELECTIIDS = "SELECT ID_S FROM TEACHINGUNIT_STATEMENT WHERE ID_T = ?";
+    final String SQLSHOWSTATEMENTS = "SELECT * FROM STATEMENT WHERE ID_S = ?"; //hacer
     final String SQLADDTEACHINGUNIT = "INSERT INTO TEACHINGUNIT (ACRONYM, TITLE, ASSESSMENT, DESCRIPTION_T) VALUES(?,?,?,?)";
     final String SQLINSERTEXAMCALL = "INSERT INTO EXAMCALL VALUES(?,?,?,?,?)";
-    final String SQL_CALL ="SELECT * FROM EXAMCALL WHERE ID_S = ?";
+    final String SQL_CALL = "SELECT * FROM EXAMCALL WHERE ID_S = ?";
     final String SQL_VIEWTEXT = "SELECT DESCRIPTION_S FROM STATEMENT WHERE ID_S = ?";
     final String SQL_INSERT = "INSERT INTO EXAMCALL (CALL_EXAM, DESCRIPTION_EXAM, DATE_EXAM, COURSE, ID_S) VALUES (?, ?, ?, ?, ?)";
     final String SQL_CREATESTATEMENT = "INSERT INTO STATEMENT (ID_S,DESCRIPTION_S,LEVEL_S,AVAILABLE,ROUTE) VALUES (?,?,?,?,?)";
@@ -53,23 +55,23 @@ public class DBImplementation implements ClassDAO {
         this.userDB = this.configFile.getString("DBUser");
         this.passwordDB = this.configFile.getString("DBPass");
     }
-    
-    @Override
-    public Map<String, Statement> showStatements() {
+
+    public Map<Integer, TeachingUnitStatement> showStatementsUnit(int idu) {
         ResultSet rs = null;
-        Map<String, Statement> statements = new TreeMap<>();
-        Statement st;
-        
+        Map<Integer, TeachingUnitStatement> teachingUnitStatement = new TreeMap<>();
+        TeachingUnitStatement tus;
+        //SQLSELECTIIDS
+
         this.openConnection();
-        
         try {
-            stmt = con.prepareStatement(SQLSHOWSTATEMENTS);
+            stmt = con.prepareStatement(SQLSELECTIIDS);
+            stmt.setInt(1, idu);
             rs = stmt.executeQuery();
-            
+
             while (rs.next()) {
-                st = new Statement();
-                st.setDescription(rs.getString("DESCRIPTION_S"));
-                statements.put(st.getDescription(), st);
+                tus = new TeachingUnitStatement();
+                tus.setStatementId(rs.getInt("ID_S"));
+                teachingUnitStatement.put(tus.getStatementId(), tus);
             }
             rs.close();
             stmt.close();
@@ -77,13 +79,55 @@ public class DBImplementation implements ClassDAO {
         } catch (SQLException e) {
             System.out.println("Error getting the statements: " + e.getMessage());
         }
+        return teachingUnitStatement;
+    }
+
+    @Override
+    public Map<String, Statement> showStatements(int idu) {
+        ResultSet rs = null;
+        Map<Integer, TeachingUnitStatement> teachingUnitStatement = new TreeMap<>();
+        teachingUnitStatement = showStatementsUnit(idu);
+        Map<String, Statement> statements = new TreeMap<>();
+        Statement st;
+        int s;
+
+        this.openConnection();
+        for (Map.Entry<Integer, TeachingUnitStatement> suobj : teachingUnitStatement.entrySet()) {
+            try {
+                stmt = con.prepareStatement(SQLSHOWSTATEMENTS);
+                stmt.setInt(1, suobj.getValue().getStatementId());
+                rs = stmt.executeQuery();
+
+
+
+                while (rs.next()) {
+                    st = new Statement();
+                    st.setId(rs.getInt("ID_S"));
+                    st.setDescription(rs.getString("DESCRIPTION_S"));
+                    st.setLevel(Difficulty.valueOf(rs.getString("LEVEL_S")));
+
+                    st.setAvailable(rs.getBoolean("AVAILABLE"));
+                    st.setPath(rs.getString("ROUTE"));
+                    
+                    
+                    
+                    statements.put(st.getDescription(), st);
+                }
+                rs.close();
+                stmt.close();
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Error getting the statements: " + e.getMessage());
+            }
+
+        }
         return statements;
     }
-    
+
     @Override
     public boolean insertTeachingUnit(String acronym, String title, String assessment, String description) {
         boolean success = false;
-        
+
         this.openConnection();
 
         try {
@@ -92,7 +136,7 @@ public class DBImplementation implements ClassDAO {
             stmt.setString(2, title);
             stmt.setString(3, assessment);
             stmt.setString(4, description);
-    
+
             if (stmt.executeUpdate() > 0) {
                 success = true;
             }
@@ -102,14 +146,14 @@ public class DBImplementation implements ClassDAO {
         } catch (SQLException e) {
             System.out.println("Error adding teaching unit: " + e.getMessage());
         }
-        
+
         return success;
     }
-    
-        @Override
+
+    @Override
     public boolean insertExamCall(String call, String description, LocalDate date, String course, int idE) {
         boolean success = false;
-        
+
         this.openConnection();
 
         try {
@@ -119,7 +163,7 @@ public class DBImplementation implements ClassDAO {
             stmt.setDate(3, java.sql.Date.valueOf(date));
             stmt.setString(4, course);
             stmt.setInt(5, idE);
-            
+
             if (stmt.executeUpdate() > 0) {
                 success = true;
             }
@@ -129,54 +173,55 @@ public class DBImplementation implements ClassDAO {
         } catch (SQLException e) {
             System.out.println("Error adding a exam call: " + e.getMessage());
         }
-        
+
         return success;
     }
-    
-    public Map <String, ExamCall> consultCalls (int id_S) {
+
+    public Map<String, ExamCall> consultCalls(int id_S) {
         ResultSet rs = null;
-	Map<String,ExamCall> calls = new TreeMap<>();
-	ExamCall call;
-		
-	this.openConnection();
-		
-	try {
+        Map<String, ExamCall> calls = new TreeMap<>();
+        ExamCall call;
+
+        this.openConnection();
+
+        try {
             stmt = con.prepareStatement(SQL_CALL);
-            stmt.setInt(1, id_S); 
+            stmt.setInt(1, id_S);
             rs = stmt.executeQuery();
 
             while (rs.next()) {
-		call = new ExamCall();
-		call.setCall(rs.getString("CALL_EXAM"));
-		call.setDescription(rs.getString("DESCRIPTION"));
-		call.setDate(rs.getDate("DATE_EXAM").toLocalDate());
-		call.setCourse(rs.getString("COURSE"));
+                call = new ExamCall();
+                call.setCall(rs.getString("CALL_EXAM"));
+                call.setDescription(rs.getString("DESCRIPTION"));
+                call.setDate(rs.getDate("DATE_EXAM").toLocalDate());
+                call.setCourse(rs.getString("COURSE"));
                 call.setIdE(rs.getInt("ID_S"));
-		calls.put(call.getCall(), call);
+                calls.put(call.getCall(), call);
             }
 
             rs.close();
             stmt.close();
             con.close();
+            
             } catch (SQLException e) {
 			System.out.println("Error to consult calls: " + e.getMessage());
             }
             return calls;
     }
-    
+
     public String viewTextDocument(int id_S) {
-    String description = null;
+        String description = null;
 
-    this.openConnection();
+        this.openConnection();
 
-    try {
-        stmt = con.prepareStatement(SQL_VIEWTEXT);
-        stmt.setInt(1, id_S);
-        ResultSet rs = stmt.executeQuery();
+        try {
+            stmt = con.prepareStatement(SQL_VIEWTEXT);
+            stmt.setInt(1, id_S);
+            ResultSet rs = stmt.executeQuery();
 
-        if (rs.next()) {
-            description = rs.getString("DESCRIPTION_S");
-        }
+            if (rs.next()) {
+                description = rs.getString("DESCRIPTION_S");
+            }
 
         rs.close();
         stmt.close();
@@ -187,32 +232,6 @@ public class DBImplementation implements ClassDAO {
     }
 
     return description;
-    }
-	
-    @Override
-    public boolean insertExamCall(String callExam, String descriptionExam, LocalDate dateExam, String course, int idStatement) {
-    boolean success = false;
-    this.openConnection(); 
-
-    try {
-        stmt = con.prepareStatement(SQL_INSERT);
-        stmt.setString(1, callExam);
-        stmt.setString(2, descriptionExam);
-        stmt.setDate(3, java.sql.Date.valueOf(dateExam));
-        stmt.setString(4, course);
-        stmt.setInt(5, idStatement);
-
-        if (stmt.executeUpdate() > 0) {
-            success = true;
-        }
-
-        stmt.close();
-        con.close();
-    } catch (SQLException e) {
-        System.out.println("Error adding exam call: " + e.getMessage());
-    }
-
-    return success;
     }
     
     public boolean createStatement(int id, String desc, Difficulty level, boolean available, String path) {
