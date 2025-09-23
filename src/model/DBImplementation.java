@@ -30,6 +30,8 @@ public class DBImplementation implements ClassDAO {
     final String SQLADDTEACHINGUNIT = "INSERT INTO TEACHINGUNIT (ACRONYM, TITLE, ASSESSMENT, DESCRIPTION_T) VALUES(?,?,?,?)";
     final String SQLINSERTEXAMCALL = "INSERT INTO EXAMCALL VALUES(?,?,?,?,?)";
     final String SQL_CALL ="SELECT * FROM EXAMCALL WHERE ID_S = ?";
+    final String SQL_VIEWTEXT = "SELECT DESCRIPTION_S FROM STATEMENT WHERE ID_S = ?";
+    final String SQL_INSERT = "INSERT INTO EXAMCALL (CALL_EXAM, DESCRIPTION_EXAM, DATE_EXAM, COURSE, ID_S) VALUES (?, ?, ?, ?, ?)";
 
     private void openConnection() {
         try {
@@ -160,34 +162,54 @@ public class DBImplementation implements ClassDAO {
             return calls;
     }
     
-    public Map <Integer, Statement> viewTextDocument (int id_S) {
-        ResultSet rs = null;
-	Map<Integer,Statement> documents = new TreeMap<>();
-	Statement textDocument;
-		
-	this.openConnection();
-		
-	try {
-            stmt = con.prepareStatement(SQL_CALL);
-            stmt.setInt(1, id_S); 
-            rs = stmt.executeQuery();
+    public String viewTextDocument(int id_S) {
+    String description = null;
 
-            while (rs.next()) {
-		textDocument = new Statement();
-		textDocument.setId(rs.getInt("ID_S"));
-		textDocument.setDescription(rs.getString("DESCRIPTION"));
-		textDocument.setAvailable(rs.getBoolean("AVAILABLE"));
-                textDocument.setLevel(Difficulty.valueOf(rs.getString("DIFFICULTY")));
-		
-		documents.put(textDocument.getId(), textDocument);
-            }
+    this.openConnection();
 
-            rs.close();
-            stmt.close();
-            con.close();
-            } catch (SQLException e) {
-			System.out.println("Error: " + e.getMessage());
-            }
-            return documents;
+    try {
+        stmt = con.prepareStatement(SQL_VIEWTEXT);
+        stmt.setInt(1, id_S);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            description = rs.getString("DESCRIPTION_S");
+        }
+
+        rs.close();
+        stmt.close();
+        con.close();
+
+    } catch (SQLException e) {
+        System.out.println("Error: " + e.getMessage());
+    }
+
+    return description;
+    }
+	
+    @Override
+    public boolean insertExamCall(String callExam, String descriptionExam, LocalDate dateExam, String course, int idStatement) {
+    boolean success = false;
+    this.openConnection(); 
+
+    try {
+        stmt = con.prepareStatement(SQL_INSERT);
+        stmt.setString(1, callExam);
+        stmt.setString(2, descriptionExam);
+        stmt.setDate(3, java.sql.Date.valueOf(dateExam));
+        stmt.setString(4, course);
+        stmt.setInt(5, idStatement);
+
+        if (stmt.executeUpdate() > 0) {
+            success = true;
+        }
+
+        stmt.close();
+        con.close();
+    } catch (SQLException e) {
+        System.out.println("Error adding exam call: " + e.getMessage());
+    }
+
+    return success;
     }
 }
