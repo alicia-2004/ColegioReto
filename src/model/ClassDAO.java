@@ -13,10 +13,23 @@ import java.util.Map;
  * @author acer
  */
 public interface ClassDAO {
+    
+    void conectar();
+    void desconectar();
 
     boolean insertTeachingUnit(String acronym, String title, String assessment, String description);
 
+    Map<Integer, TeachingUnitStatement> showStatementsUnit(int idu);
+    
     Map<String, Statement> showStatements(int idu);
 
     boolean insertExamCall(String call, String description, LocalDate date, String course, int idE);
+    
+    Map<String, ExamCall> consultCalls(int id_S);
+    
+    String viewTextDocument(int id_S);
+    
+    boolean createStatement(int id, String desc, Difficulty level, boolean available, String path);
+    
+    boolean addUnit(int id_s,int id_t);
 }
