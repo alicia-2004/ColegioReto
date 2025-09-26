@@ -235,6 +235,7 @@ public class DBImplementation implements ClassDAO {
     return description;
     }
     
+    @Override
     public boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int idS) {
     boolean success = false;
     this.openConnection(); 
@@ -260,6 +261,7 @@ public class DBImplementation implements ClassDAO {
     return success; 
     }
     
+    @Override
     public boolean createStatement (int idS, String desc, Difficulty level, boolean available, String path) {
     boolean success = false;
     this.openConnection(); 
@@ -285,6 +287,7 @@ public class DBImplementation implements ClassDAO {
     return success; 
     }
     
+    @Override
     public boolean addUnitsToAStatement (int id_U, int id_S) {
     boolean success = false;
     this.openConnection(); 
