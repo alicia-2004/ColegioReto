@@ -16,7 +16,14 @@ public interface ClassDAO {
 
     boolean insertTeachingUnit(String acronym, String title, String assessment, String description);
 
+    Map<Integer, TeachingUnitStatement> showStatementsUnit(int idu);
+    
     Map<String, Statement> showStatements(int idu);
 
     boolean insertExamCall(String call, String description, LocalDate date, String course, int idE);
+    
+    Map<String, ExamCall> consultCalls(int id_S);
+    
+    String viewTextDocument(int id_S);
+
 }

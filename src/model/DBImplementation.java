@@ -234,13 +234,13 @@ public class DBImplementation implements ClassDAO {
     return description;
     }
     
-    public boolean createStatement(int id, String desc, Difficulty level, boolean available, String path) {
+    public boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int id_S) {
        boolean success = false;
     this.openConnection(); 
 
     try {
         stmt = con.prepareStatement(SQL_CREATESTATEMENT);
-        stmt.setInt(1, id);
+        stmt.setString(1, callExam);
         stmt.setString(2, desc);
         stmt.setString(3, level.name());
         stmt.setBoolean(4, available);
@@ -254,28 +254,6 @@ public class DBImplementation implements ClassDAO {
         con.close();
     } catch (SQLException e) {
         System.out.println("Error creating a statement: " + e.getMessage());
-    }
-
-    return success; 
-    }
-    
-    public boolean addUnit(int id_s,int id_t) {
-       boolean success = false;
-    this.openConnection(); 
-
-    try {
-        stmt = con.prepareStatement(SQL_ADDUNIT);
-        stmt.setInt(1, id_s);
-        stmt.setInt(2, id_t);
-
-        if (stmt.executeUpdate() > 0) {
-            success = true;
-        }
-
-        stmt.close();
-        con.close();
-    } catch (SQLException e) {
-        System.out.println("Error adding a unit to a statement: " + e.getMessage());
     }
 
     return success; 

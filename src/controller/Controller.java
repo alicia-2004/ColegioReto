@@ -16,13 +16,19 @@ import java.util.Map;
 import model.ClassDAO;
 import model.Statement;
 import model.DBImplementation;
+import model.ExamCall;
+import model.TeachingUnitStatement;
 
 
 public class Controller {
     
     ClassDAO dao = new DBImplementation();
     
-    public Map<String, Statement> showStatements(int idu) {
+    public Map<Integer, TeachingUnitStatement> showStatementsUnit(int idu) {
+        return dao.showStatementsUnit(idu);
+    }
+    
+    Map<String, Statement> showStatements(int idu) {
         return dao.showStatements(idu);
     }
     
@@ -33,4 +39,13 @@ public class Controller {
     public boolean insertExamCall(String call, String description, LocalDate date, String course, int idE) {
         return dao.insertExamCall(call, description, date, course, idE);
     }
+    
+    public Map<String, ExamCall> consultCalls(int id_S) {
+        return dao.consultCalls(id_S);
+    }
+    
+    public String viewTextDocument(int id_S) {
+        return dao.viewTextDocument(id_S);
+    }
+
 }
