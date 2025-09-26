@@ -2,8 +2,6 @@ package colegioreto;
 
 import controller.Controller;
 import java.time.LocalDate;
-import model.ClassDAO;
-import model.DBImplementation;
 import utilities.Utilities;
 
 /**
@@ -66,11 +64,6 @@ public class Main {
     public static void main(String[] args) {
         int op;
         Controller cont = new Controller();
-        ClassDAO db = new DBImplementation();
-
-        db.conectar();
-        System.out.println("Operaciones en la base de datos...");
-
         do {
             switch (op = menu()) {
                 case 1:
@@ -78,7 +71,7 @@ public class Main {
                     break;
                 case 2:
                     addExamCall(cont);
-                     break;
+                    break;
                 case 3:
                     // to implement
                     break;
@@ -93,8 +86,5 @@ public class Main {
                     break;
             }
         } while (op != 8);
-        
-        db.desconectar();
-        System.out.println("Conexión cerrada.");
     }
 }

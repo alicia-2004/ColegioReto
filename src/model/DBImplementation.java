@@ -55,17 +55,6 @@ public class DBImplementation implements ClassDAO {
         this.userDB = this.configFile.getString("DBUser");
         this.passwordDB = this.configFile.getString("DBPass");
     }
-    
-    @Override
-    public void conectar() {
-        System.out.println("Conectando a la base de datos...");
-        // aquí pondrías el código real de conexión
-    }
-
-    @Override
-    public void desconectar() {
-        System.out.println("Desconectando de la base de datos...");
-    }
 
     public Map<Integer, TeachingUnitStatement> showStatementsUnit(int idu) {
         ResultSet rs = null;
@@ -93,6 +82,7 @@ public class DBImplementation implements ClassDAO {
         return teachingUnitStatement;
     }
 
+    @Override
     public Map<String, Statement> showStatements(int idu) {
         ResultSet rs = null;
         Map<Integer, TeachingUnitStatement> teachingUnitStatement = new TreeMap<>();
