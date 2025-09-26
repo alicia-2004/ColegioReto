@@ -16,6 +16,7 @@ import java.util.Map;
 import model.ClassDAO;
 import model.Statement;
 import model.DBImplementation;
+import model.Difficulty;
 import model.ExamCall;
 import model.TeachingUnitStatement;
 
@@ -47,5 +48,16 @@ public class Controller {
     public String viewTextDocument(int id_S) {
         return dao.viewTextDocument(id_S);
     }
-
+    
+    public boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int idS) {
+        return dao.assignStatementToExamCall(callExam, desc, fecha, course, idS);
+    }
+    
+    public boolean createStatement (int idS, String desc, Difficulty level, boolean available, String path) {
+        return dao.createStatement(idS, desc, level, available, path);
+    }
+    
+    public boolean addUnitsToAStatement (int id_U, int id_S) {
+        return dao.addUnitsToAStatement(id_U, id_S);
+    }
 }

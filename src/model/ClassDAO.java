@@ -25,5 +25,11 @@ public interface ClassDAO {
     Map<String, ExamCall> consultCalls(int id_S);
     
     String viewTextDocument(int id_S);
+    
+    boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int idS);
+    
+    boolean createStatement (int idS, String desc, Difficulty level, boolean available, String path);
+    
+    boolean addUnitsToAStatement (int id_U, int id_S);
 
 }
