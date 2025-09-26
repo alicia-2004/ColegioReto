@@ -36,6 +36,7 @@ public class DBImplementation implements ClassDAO {
     final String SQL_INSERT = "INSERT INTO EXAMCALL (CALL_EXAM, DESCRIPTION_EXAM, DATE_EXAM, COURSE, ID_S) VALUES (?, ?, ?, ?, ?)";
     final String SQL_CREATESTATEMENT = "INSERT INTO STATEMENT (ID_S,DESCRIPTION_S,LEVEL_S,AVAILABLE,ROUTE) VALUES (?,?,?,?,?)";
     final String SQL_ADDUNIT = "INSERT INTO TEACHINGUNIT_STATEMENT (ID_T,ID_S) VALUES (?,?)";
+    final String SQL_CREATEEXAMCALL = "INSERT INTO EXAMCALL (CALL_EXAM,DESCRIPTION_EXAM,DATE_EXAM,COURSE,ID_S) VALUES (?,?,?,?,?)";
 
     private void openConnection() {
         try {
@@ -234,13 +235,38 @@ public class DBImplementation implements ClassDAO {
     return description;
     }
     
-    public boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int id_S) {
-       boolean success = false;
+    public boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int idS) {
+    boolean success = false;
+    this.openConnection(); 
+
+    try {
+        stmt = con.prepareStatement(SQL_CREATEEXAMCALL);
+        stmt.setString(1, callExam);
+        stmt.setString(2, desc);
+        stmt.setDate(3, java.sql.Date.valueOf(fecha));
+        stmt.setString(4, course);
+        stmt.setInt(5, idS);
+
+        if (stmt.executeUpdate() > 0) {
+            success = true;
+        }
+
+        stmt.close();
+        con.close();
+    } catch (SQLException e) {
+        System.out.println("Error adding a statement: " + e.getMessage());
+    }
+
+    return success; 
+    }
+    
+    public boolean createStatement (int idS, String desc, Difficulty level, boolean available, String path) {
+    boolean success = false;
     this.openConnection(); 
 
     try {
         stmt = con.prepareStatement(SQL_CREATESTATEMENT);
-        stmt.setString(1, callExam);
+        stmt.setInt(1, idS);
         stmt.setString(2, desc);
         stmt.setString(3, level.name());
         stmt.setBoolean(4, available);
@@ -253,7 +279,29 @@ public class DBImplementation implements ClassDAO {
         stmt.close();
         con.close();
     } catch (SQLException e) {
-        System.out.println("Error creating a statement: " + e.getMessage());
+        System.out.println("Error adding a statement: " + e.getMessage());
+    }
+
+    return success; 
+    }
+    
+    public boolean addUnitsToAStatement (int id_U, int id_S) {
+    boolean success = false;
+    this.openConnection(); 
+
+    try {
+        stmt = con.prepareStatement(SQL_ADDUNIT);
+        stmt.setInt(1, id_U);
+        stmt.setInt(2, id_S);
+
+        if (stmt.executeUpdate() > 0) {
+            success = true;
+        }
+
+        stmt.close();
+        con.close();
+    } catch (SQLException e) {
+        System.out.println("Error adding a statement: " + e.getMessage());
     }
 
     return success; 

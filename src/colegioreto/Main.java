@@ -81,6 +81,10 @@ public class Main {
         cont.insertExamCall(call, description, date, course, id_s);
 
     }
+    
+    public static void createStatementAddingUnits () {
+        
+    }
 
     public static void main(String[] args) {
         int op;
