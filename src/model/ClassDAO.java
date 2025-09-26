@@ -15,8 +15,6 @@ import java.util.Map;
 public interface ClassDAO {
 
     boolean insertTeachingUnit(String acronym, String title, String assessment, String description);
-
-    Map<Integer, TeachingUnitStatement> showStatementsUnit(int idu);
     
     Map<String, Statement> showStatements(int idu);
 

@@ -24,11 +24,7 @@ public class Controller {
     
     ClassDAO dao = new DBImplementation();
     
-    public Map<Integer, TeachingUnitStatement> showStatementsUnit(int idu) {
-        return dao.showStatementsUnit(idu);
-    }
-    
-    Map<String, Statement> showStatements(int idu) {
+    public Map<String, Statement> showStatements(int idu) {
         return dao.showStatements(idu);
     }
     

@@ -2,6 +2,9 @@ package colegioreto;
 
 import controller.Controller;
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.TreeMap;
+import model.Statement;
 import utilities.Utilities;
 
 /**
@@ -25,8 +28,26 @@ public class Main {
         op = Utilities.leerInt(1, 8);
         return op;
     }
+    
+    public static 
 
-    public static void addTeachingUnit(Controller cont) {
+    public static void showStatements(Controller cont) {
+        int idu;
+        Map<String, Statement> statements = new TreeMap<>();
+        System.out.println();
+        idu = Utilities.leerInt();
+        statements = cont.showStatements(idu);
+
+        for (Statement st : statements.values()) {
+            System.out.println("ID: " + st.getId());
+            System.out.println("Description: " + st.getDescription());
+            System.out.println("Level: " + st.getLevel().toString());
+            System.out.println("Avaliable: " + st.getAvailable());
+            System.out.println("Path: " + st.getPath());
+        }
+    }
+
+    public static void insertTeachingUnit(Controller cont) {
         String acronym, title, assessment, description;
         System.out.println("Insert the acronym to be used:");
         acronym = Utilities.introducirCadena();
@@ -39,13 +60,13 @@ public class Main {
 
         cont.insertTeachingUnit(acronym, title, assessment, description);
     }
-    
-    public static void addExamCall (Controller cont){
-        
+
+    public static void insertExamCall(Controller cont) {
+
         String call, description, course;
         LocalDate date;
         int id_s;
-        
+
         System.out.println("Insert the exam call (session):");
         call = Utilities.introducirCadena();
         System.out.println("Insert the description: ");
@@ -56,9 +77,9 @@ public class Main {
         course = Utilities.introducirCadena();
         System.out.println("Insert the id associated with a statement: ");
         id_s = Utilities.leerInt(0, 1000);
-        
+
         cont.insertExamCall(call, description, date, course, id_s);
-        
+
     }
 
     public static void main(String[] args) {
@@ -67,22 +88,27 @@ public class Main {
         do {
             switch (op = menu()) {
                 case 1:
-                    addTeachingUnit(cont);
+                    insertTeachingUnit(cont);
                     break;
                 case 2:
-                    addExamCall(cont);
+                    insertExamCall(cont);
                     break;
                 case 3:
                     // to implement
                     break;
                 case 4:
-                    // to implement
+                    showStatements(cont);
                     break;
                 case 5:
                     // to implement
                     break;
                 case 6:
                     // to implement
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    System.out.println("Bye, Bye :)");
                     break;
             }
         } while (op != 8);
