@@ -34,11 +34,12 @@ public class Main {
     public static void showStatements(Controller cont) {
         int idu;
         Map<String, Statement> statements = new TreeMap<>();
-        System.out.println();
+        System.out.println("Insertar el numero de la unidad por la que quieras filtrar:");
         idu = Utilities.leerInt();
         statements = cont.showStatements(idu);
 
         for (Statement st : statements.values()) {
+            System.out.println("--------------------------------------");
             System.out.println("ID: " + st.getId());
             System.out.println("Description: " + st.getDescription());
             System.out.println("Level: " + st.getLevel().toString());
@@ -94,6 +95,7 @@ public class Main {
     calls = cont.consultCalls(ids);
 
     for (ExamCall ec : calls.values()) {
+        System.out.println("--------------------------------------");
         System.out.println("CALL: " + ec.getCall());
         System.out.println("DESCRIPTION: " + ec.getDescription());
         System.out.println("DATE: " + ec.getDate());

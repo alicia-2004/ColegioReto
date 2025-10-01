@@ -86,15 +86,17 @@ public class DBImplementation implements ClassDAO {
     @Override
     public Map<String, Statement> showStatements(int idu) {
         ResultSet rs = null;
-        Map<Integer, TeachingUnitStatement> teachingUnitStatement = new TreeMap<>();
+        Map<Integer, TeachingUnitStatement> teachingUnitStatement;
+        teachingUnitStatement = new TreeMap<>();
         teachingUnitStatement = showStatementsUnit(idu);
         Map<String, Statement> statements = new TreeMap<>();
         Statement st;
         int s;
 
         this.openConnection();
+        try {
         for (Map.Entry<Integer, TeachingUnitStatement> suobj : teachingUnitStatement.entrySet()) {
-            try {
+            
                 stmt = con.prepareStatement(SQLSHOWSTATEMENTS);
                 stmt.setInt(1, suobj.getValue().getStatementId());
                 rs = stmt.executeQuery();
@@ -110,18 +112,21 @@ public class DBImplementation implements ClassDAO {
                     st.setAvailable(rs.getBoolean("AVAILABLE"));
                     st.setPath(rs.getString("ROUTE"));
                     
-                    
-                    
                     statements.put(st.getDescription(), st);
                 }
+                
+            
+
+            }
                 rs.close();
                 stmt.close();
                 con.close();
-            } catch (SQLException e) {
+            }catch (SQLException e) {
                 System.out.println("Error getting the statements: " + e.getMessage());
-            }
+        
 
-        }
+
+    }
         return statements;
     }
 
@@ -178,6 +183,7 @@ public class DBImplementation implements ClassDAO {
         return success;
     }
 
+    @Override
     public Map<String, ExamCall> consultCalls(int id_S) {
         ResultSet rs = null;
         Map<String, ExamCall> calls = new TreeMap<>();
@@ -193,7 +199,7 @@ public class DBImplementation implements ClassDAO {
             while (rs.next()) {
                 call = new ExamCall();
                 call.setCall(rs.getString("CALL_EXAM"));
-                call.setDescription(rs.getString("DESCRIPTION"));
+                call.setDescription(rs.getString("DESCRIPTION_EXAM"));
                 call.setDate(rs.getDate("DATE_EXAM").toLocalDate());
                 call.setCourse(rs.getString("COURSE"));
                 call.setIdE(rs.getInt("ID_S"));
@@ -210,6 +216,7 @@ public class DBImplementation implements ClassDAO {
             return calls;
     }
 
+    @Override
     public Map<Integer, Statement> viewTextDocument(int id) {
     Map<Integer, Statement> statements = new TreeMap<>();
     this.openConnection();
