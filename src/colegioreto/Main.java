@@ -4,6 +4,7 @@ import controller.Controller;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.TreeMap;
+import model.ExamCall;
 import model.Statement;
 import utilities.Utilities;
 
@@ -29,7 +30,6 @@ public class Main {
         return op;
     }
     
-    public static 
 
     public static void showStatements(Controller cont) {
         int idu;
@@ -85,6 +85,55 @@ public class Main {
     public static void createStatementAddingUnits () {
         
     }
+    
+    public static void consultCalls(Controller cont) {
+    int ids;
+    Map<String, ExamCall> calls = new TreeMap<>();
+    System.out.println("Introduce el id del Enunciado utilizado para ver sus convocatorias: ");
+    ids = Utilities.leerInt();
+    calls = cont.consultCalls(ids);
+
+    for (ExamCall ec : calls.values()) {
+        System.out.println("CALL: " + ec.getCall());
+        System.out.println("DESCRIPTION: " + ec.getDescription());
+        System.out.println("DATE: " + ec.getDate());
+        System.out.println("COURSE: " + ec.getCourse());
+        System.out.println("ID_STATEMENT: " + ec.getIdE());
+    }
+    }
+
+    public static void viewTextDocument(Controller cont) {
+    System.out.println("Introduce el id del Enunciado para mostrar su descripción: ");
+    int id = Utilities.leerInt();
+
+    Map<Integer, Statement> statements = cont.viewTextDocument(id);
+
+    Statement st = statements.get(id);
+    if (st != null) {
+        System.out.println("DESCRIPTION: " + st.getDescription());
+    } else {
+        System.out.println("No se encontró un enunciado con ese id.");
+    }
+    }
+
+
+    public static void assignStatementToExamCall(Controller cont) {
+    String callExam, desc, course;
+    int idS;
+    LocalDate fecha;
+    System.out.println("");
+    callExam = Utilities.introducirCadena();
+    System.out.println("");
+    desc = Utilities.introducirCadena();
+    System.out.println("");
+    fecha = Utilities.leerFechaDMA();
+    System.out.println("");
+    course = Utilities.introducirCadena();
+    System.out.println("");
+    idS = Utilities.leerInt();
+
+    cont.assignStatementToExamCall(callExam,desc,fecha,course,idS);
+    }
 
     public static void main(String[] args) {
         int op;
@@ -104,12 +153,13 @@ public class Main {
                     showStatements(cont);
                     break;
                 case 5:
-                    // to implement
+                    consultCalls(cont);
                     break;
                 case 6:
-                    // to implement
+                    viewTextDocument(cont);
                     break;
                 case 7:
+                    assignStatementToExamCall(cont);
                     break;
                 case 8:
                     System.out.println("Bye, Bye :)");

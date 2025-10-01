@@ -210,19 +210,22 @@ public class DBImplementation implements ClassDAO {
             return calls;
     }
 
-    public String viewTextDocument(int id_S) {
-        String description = null;
+    public Map<Integer, Statement> viewTextDocument(int id) {
+    Map<Integer, Statement> statements = new TreeMap<>();
+    this.openConnection();
 
-        this.openConnection();
+    try {
+        stmt = con.prepareStatement(SQL_VIEWTEXT);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
 
-        try {
-            stmt = con.prepareStatement(SQL_VIEWTEXT);
-            stmt.setInt(1, id_S);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                description = rs.getString("DESCRIPTION_S");
-            }
+        while (rs.next()) {
+            Statement statement = new Statement();
+            statement.setId(rs.getInt("ID"));  
+            statement.setDescription(rs.getString("DESCRIPTION")); 
+            
+            statements.put(statement.getId(), statement);
+        }
 
         rs.close();
         stmt.close();
@@ -232,7 +235,7 @@ public class DBImplementation implements ClassDAO {
         System.out.println("Error to view a text document: " + e.getMessage());
     }
 
-    return description;
+    return statements;
     }
     
     @Override

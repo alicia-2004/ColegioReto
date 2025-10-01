@@ -22,7 +22,7 @@ public interface ClassDAO {
     
     Map<String, ExamCall> consultCalls(int id_S);
     
-    String viewTextDocument(int id_S);
+    Map<Integer, Statement> viewTextDocument(int id);
     
     boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int idS);
     

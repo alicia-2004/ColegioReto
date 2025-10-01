@@ -41,8 +41,8 @@ public class Controller {
         return dao.consultCalls(id_S);
     }
     
-    public String viewTextDocument(int id_S) {
-        return dao.viewTextDocument(id_S);
+    public Map<Integer, Statement> viewTextDocument(int id) {
+        return dao.viewTextDocument(id);
     }
     
     public boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int idS) {
