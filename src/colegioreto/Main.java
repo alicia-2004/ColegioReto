@@ -4,6 +4,7 @@ import controller.Controller;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.TreeMap;
+import model.Difficulty;
 import model.ExamCall;
 import model.Statement;
 import utilities.Utilities;
@@ -34,7 +35,7 @@ public class Main {
     public static void showStatements(Controller cont) {
         int idu;
         Map<String, Statement> statements = new TreeMap<>();
-        System.out.println("Insertar el numero de la unidad por la que quieras filtrar:");
+        System.out.println("Insert the number of the unit you want to filter by: ");
         idu = Utilities.leerInt();
         statements = cont.showStatements(idu);
 
@@ -83,14 +84,89 @@ public class Main {
 
     }
     
-    public static void createStatementAddingUnits () {
+    
+    public static int createStatement(Controller cont) {
+    int idS, error = -1;
+    String desc, path, available,enume;
+    Difficulty level=null;
+    boolean isAvailable;
         
+    System.out.println("Enter Statement ID:");
+    idS = Utilities.leerInt();
+
+    System.out.println("Enter description:");
+    desc = Utilities.introducirCadena();
+
+    while (level == null) {
+            System.out.println("Enter difficulty (LOW, MEDIUM, HIGH):");
+            enume = Utilities.introducirCadena().toUpperCase();
+
+            try {
+                level = Difficulty.valueOf(enume);
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid option. Please enter LOW, MEDIUM, or HIGH.");
+            }
     }
+
+    System.out.println("Is it available? (true/false):");
+    available = Utilities.introducirCadena("true","false");
+    isAvailable = Boolean.parseBoolean(available);
+
+    System.out.println("Enter file path:");
+    path = Utilities.introducirCadena();
+
+    if (cont.createStatement(idS, desc, level, isAvailable, path)) {
+        System.out.println("Statement created successfully!");
+        return idS;
+    } else {
+        return error; 
+    }
+}
+    
+    public static void createStatementWithUnitsAndExamCall(Controller cont) {
+    int idS,numUnits,idU,id_s;
+    String call,description,course;
+    LocalDate date;
+    
+    idS = createStatement(cont);
+    
+    if (idS == -1) {
+        System.out.println("Error creating statement.");
+    } else {
+    System.out.println("How many teaching units do you want to add?");
+    numUnits = Utilities.leerInt();
+
+    for (int i = 0; i < numUnits; i++) {
+        System.out.println("Enter Unit ID:");
+        idU = Utilities.leerInt();
+
+        if (cont.addUnitsToAStatement(idU, idS)) {
+            System.out.println("Unit " + idU + " added to Statement " + idS);
+        } else {
+            System.out.println("Error adding unit " + idU);
+        }
+    }
+
+    System.out.println("Insert the exam call (session):");
+    call = Utilities.introducirCadena();
+    System.out.println("Insert the description: ");
+    description = Utilities.introducirCadena();
+    System.out.println("Insert the date (dd/MM/yyyy): ");
+    date = Utilities.leerFechaDMA();
+    System.out.println("Insert a course: ");
+    course = Utilities.introducirCadena();
+
+    id_s = idS;
+    
+    System.out.println("Statement added to ExamCall " + idS);
+    cont.insertExamCall(call, description, date, course, id_s); 
+    }
+}
     
     public static void consultCalls(Controller cont) {
     int ids;
     Map<String, ExamCall> calls = new TreeMap<>();
-    System.out.println("Introduce el id del Enunciado utilizado para ver sus convocatorias: ");
+    System.out.println("Enter the ID of the Statement used to view its calls: ");
     ids = Utilities.leerInt();
     calls = cont.consultCalls(ids);
 
@@ -105,7 +181,7 @@ public class Main {
     }
 
     public static void viewTextDocument(Controller cont) {
-    System.out.println("Introduce el id del Enunciado para mostrar su descripción: ");
+    System.out.println("Enter the id of the Statement to display its description: ");
     int id = Utilities.leerInt();
 
     Map<Integer, Statement> statements = cont.viewTextDocument(id);
@@ -114,7 +190,7 @@ public class Main {
     if (st != null) {
         System.out.println("DESCRIPTION: " + st.getDescription());
     } else {
-        System.out.println("No se encontró un enunciado con ese id.");
+        System.out.println("No statement was found with that id.");
     }
     }
 
@@ -123,19 +199,19 @@ public class Main {
     String callExam, desc, course;
     int idS;
     LocalDate fecha;
-    System.out.println("Por favor, introduzca la convocatoria:");
+    System.out.println("Please enter the call:");
     callExam = Utilities.introducirCadena();
-    System.out.println("Por favor, introduzca el descuento:");
+    System.out.println("Please enter the description:");
     desc = Utilities.introducirCadena();
-    System.out.println("Fecha:");
+    System.out.println("Date:");
     fecha = Utilities.leerFechaDMA();
-    System.out.println("Curso:");
+    System.out.println("Course:");
     course = Utilities.introducirCadena();
-    System.out.println("Id de los statement:");
+    System.out.println("Id of the statement:");
     idS = Utilities.leerInt();
 
     cont.assignStatementToExamCall(callExam,desc,fecha,course,idS);
-    System.out.println("Se introduzco correctamente :)");
+    System.out.println("It was entered correctly");
     }
 
     public static void main(String[] args) {
@@ -150,7 +226,7 @@ public class Main {
                     insertExamCall(cont);
                     break;
                 case 3:
-                    // to implement
+                    createStatementWithUnitsAndExamCall(cont);
                     break;
                 case 4:
                     showStatements(cont);
