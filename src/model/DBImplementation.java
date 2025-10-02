@@ -97,7 +97,9 @@ public class DBImplementation implements ClassDAO {
     }
 
     /**
-     * {@inheritDoc}
+     * Retrieves the statements associated with a teaching unit.
+     * @param idu the unit ID
+     * @return map of statements
      */
     @Override
     public Map<String, Statement> showStatements(int idu) {
@@ -147,7 +149,12 @@ public class DBImplementation implements ClassDAO {
     }
 
     /**
-     * {@inheritDoc}
+     * Inserts a new teaching unit into the database.
+     * @param acronym the acronym
+     * @param title the title
+     * @param assessment the assessment
+     * @param description the description
+     * @return true if successful, false otherwise
      */
     @Override
     public boolean insertTeachingUnit(String acronym, String title, String assessment, String description) {
@@ -176,7 +183,13 @@ public class DBImplementation implements ClassDAO {
     }
 
     /**
-     * {@inheritDoc}
+     * Inserts a new exam call into the database.
+     * @param call the call name
+     * @param description the description
+     * @param date the date
+     * @param course the course
+     * @param idE the statement ID
+     * @return true if successful, false otherwise
      */
     @Override
     public boolean insertExamCall(String call, String description, LocalDate date, String course, int idE) {
@@ -204,18 +217,11 @@ public class DBImplementation implements ClassDAO {
 
         return success;
     }
-
+    
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Map<String, ExamCall> consultCalls(int id_S) {
-
-New:         return success;
-    }
-
-    /**
-     * {@inheritDoc}
+     * Consults the exam calls associated with a statement.
+     * @param id_S the statement ID
+     * @return map of exam calls
      */
     @Override
     public Map<String, ExamCall> consultCalls(int id_S) {
@@ -251,7 +257,9 @@ New:         return success;
     }
 
     /**
-     * {@inheritDoc}
+     * Views the text document for a statement.
+     * @param id the statement ID
+     * @return map of statements
      */
     @Override
     public Map<Integer, Statement> viewTextDocument(int id) {
@@ -283,7 +291,13 @@ New:         return success;
     }
     
     /**
-     * {@inheritDoc}
+     * Assigns a statement to an exam call.
+     * @param callExam the exam call name
+     * @param desc the description
+     * @param fecha the date
+     * @param course the course
+     * @param idS the statement ID
+     * @return true if successful
      */
     @Override
     public boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int idS) {
@@ -312,7 +326,13 @@ New:         return success;
     }
     
     /**
-     * {@inheritDoc}
+     * Creates a new statement.
+     * @param idS the ID
+     * @param desc the description
+     * @param level the difficulty level
+     * @param available availability
+     * @param path the path
+     * @return true if successful
      */
     @Override
     public boolean createStatement (int idS, String desc, Difficulty level, boolean available, String path) {
@@ -341,7 +361,10 @@ New:         return success;
     }
     
     /**
-     * {@inheritDoc}
+     * Adds teaching units to a statement.
+     * @param id_U the unit ID
+     * @param id_S the statement ID
+     * @return true if successful
      */
     @Override
     public boolean addUnitsToAStatement (int id_U, int id_S) {
