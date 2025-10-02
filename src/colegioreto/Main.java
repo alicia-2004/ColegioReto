@@ -123,18 +123,19 @@ public class Main {
     String callExam, desc, course;
     int idS;
     LocalDate fecha;
-    System.out.println("");
+    System.out.println("Por favor, introduzca la convocatoria:");
     callExam = Utilities.introducirCadena();
-    System.out.println("");
+    System.out.println("Por favor, introduzca el descuento:");
     desc = Utilities.introducirCadena();
-    System.out.println("");
+    System.out.println("Fecha:");
     fecha = Utilities.leerFechaDMA();
-    System.out.println("");
+    System.out.println("Curso:");
     course = Utilities.introducirCadena();
-    System.out.println("");
+    System.out.println("Id de los statement:");
     idS = Utilities.leerInt();
 
     cont.assignStatementToExamCall(callExam,desc,fecha,course,idS);
+    System.out.println("Se introduzco correctamente :)");
     }
 
     public static void main(String[] args) {

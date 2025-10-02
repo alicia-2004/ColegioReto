@@ -32,7 +32,7 @@ public class DBImplementation implements ClassDAO {
     final String SQLADDTEACHINGUNIT = "INSERT INTO TEACHINGUNIT (ACRONYM, TITLE, ASSESSMENT, DESCRIPTION_T) VALUES(?,?,?,?)";
     final String SQLINSERTEXAMCALL = "INSERT INTO EXAMCALL VALUES(?,?,?,?,?)";
     final String SQL_CALL = "SELECT * FROM EXAMCALL WHERE ID_S = ?";
-    final String SQL_VIEWTEXT = "SELECT DESCRIPTION_S FROM STATEMENT WHERE ID_S = ?";
+    final String SQL_VIEWTEXT = "SELECT DESCRIPTION_S, ID_S FROM STATEMENT WHERE ID_S = ?";
     final String SQL_INSERT = "INSERT INTO EXAMCALL (CALL_EXAM, DESCRIPTION_EXAM, DATE_EXAM, COURSE, ID_S) VALUES (?, ?, ?, ?, ?)";
     final String SQL_CREATESTATEMENT = "INSERT INTO STATEMENT (ID_S,DESCRIPTION_S,LEVEL_S,AVAILABLE,ROUTE) VALUES (?,?,?,?,?)";
     final String SQL_ADDUNIT = "INSERT INTO TEACHINGUNIT_STATEMENT (ID_T,ID_S) VALUES (?,?)";
@@ -228,8 +228,8 @@ public class DBImplementation implements ClassDAO {
 
         while (rs.next()) {
             Statement statement = new Statement();
-            statement.setId(rs.getInt("ID"));  
-            statement.setDescription(rs.getString("DESCRIPTION")); 
+            statement.setDescription(rs.getString("DESCRIPTION_S")); 
+            statement.setId(rs.getInt("ID_S"));
             
             statements.put(statement.getId(), statement);
         }
