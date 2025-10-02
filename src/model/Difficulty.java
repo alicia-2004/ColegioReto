@@ -6,11 +6,12 @@
 package model;
 
 /**
+ * Enum representing the difficulty levels for statements.
  *
  * @author Deusto
  */
 public enum Difficulty {
     LOW,
-    MEDIUM,
+    AVERAGE,
     HIGH
 }

@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
 import java.util.TreeMap;
 
 /**
+ * Implementation of ClassDAO using database operations.
+ * Handles all database interactions for the application.
  *
  * @author acer
  */
@@ -38,6 +40,9 @@ public class DBImplementation implements ClassDAO {
     final String SQL_ADDUNIT = "INSERT INTO TEACHINGUNIT_STATEMENT (ID_T,ID_S) VALUES (?,?)";
     final String SQL_CREATEEXAMCALL = "INSERT INTO EXAMCALL (CALL_EXAM,DESCRIPTION_EXAM,DATE_EXAM,COURSE,ID_S) VALUES (?,?,?,?,?)";
 
+    /**
+     * Opens a database connection.
+     */
     private void openConnection() {
         try {
             con = DriverManager.getConnection(urlDB, this.userDB, this.passwordDB);
@@ -49,6 +54,9 @@ public class DBImplementation implements ClassDAO {
         }
     }
 
+    /**
+     * Constructor that initializes the database configuration.
+     */
     public DBImplementation() {
         this.configFile = ResourceBundle.getBundle("model.configClass");
         this.driverDB = this.configFile.getString("Driver");
@@ -57,6 +65,11 @@ public class DBImplementation implements ClassDAO {
         this.passwordDB = this.configFile.getString("DBPass");
     }
 
+    /**
+     * Retrieves teaching unit statements for a unit.
+     * @param idu the unit ID
+     * @return map of teaching unit statements
+     */
     public Map<Integer, TeachingUnitStatement> showStatementsUnit(int idu) {
         ResultSet rs = null;
         Map<Integer, TeachingUnitStatement> teachingUnitStatement = new TreeMap<>();
@@ -83,6 +96,9 @@ public class DBImplementation implements ClassDAO {
         return teachingUnitStatement;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, Statement> showStatements(int idu) {
         ResultSet rs = null;
@@ -130,6 +146,9 @@ public class DBImplementation implements ClassDAO {
         return statements;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean insertTeachingUnit(String acronym, String title, String assessment, String description) {
         boolean success = false;
@@ -156,6 +175,9 @@ public class DBImplementation implements ClassDAO {
         return success;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean insertExamCall(String call, String description, LocalDate date, String course, int idE) {
         boolean success = false;
@@ -183,6 +205,18 @@ public class DBImplementation implements ClassDAO {
         return success;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, ExamCall> consultCalls(int id_S) {
+
+New:         return success;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<String, ExamCall> consultCalls(int id_S) {
         ResultSet rs = null;
@@ -216,6 +250,9 @@ public class DBImplementation implements ClassDAO {
             return calls;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Map<Integer, Statement> viewTextDocument(int id) {
     Map<Integer, Statement> statements = new TreeMap<>();
@@ -245,6 +282,9 @@ public class DBImplementation implements ClassDAO {
     return statements;
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean assignStatementToExamCall(String callExam, String desc, LocalDate fecha, String course, int idS) {
     boolean success = false;
@@ -271,6 +311,9 @@ public class DBImplementation implements ClassDAO {
     return success; 
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean createStatement (int idS, String desc, Difficulty level, boolean available, String path) {
     boolean success = false;
@@ -297,6 +340,9 @@ public class DBImplementation implements ClassDAO {
     return success; 
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean addUnitsToAStatement (int id_U, int id_S) {
     boolean success = false;

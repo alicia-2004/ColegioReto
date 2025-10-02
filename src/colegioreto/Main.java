@@ -10,11 +10,17 @@ import model.Statement;
 import utilities.Utilities;
 
 /**
+ * Main class for the Colegio Reto application.
+ * This class provides the main menu and handles user interactions for managing teaching units, exam calls, and statements.
  *
  * @author Deusto
  */
 public class Main {
 
+    /**
+     * Displays the main menu options and reads the user's choice.
+     * @return the selected menu option as an integer
+     */
     public static int menu() {
         int op;
         System.out.println("------------------------------------");
@@ -32,6 +38,10 @@ public class Main {
     }
     
 
+    /**
+     * Shows the statements associated with a specific teaching unit.
+     * @param cont the Controller instance to interact with the model
+     */
     public static void showStatements(Controller cont) {
         int idu;
         Map<String, Statement> statements = new TreeMap<>();
@@ -49,6 +59,10 @@ public class Main {
         }
     }
 
+    /**
+     * Inserts a new teaching unit into the system.
+     * @param cont the Controller instance to interact with the model
+     */
     public static void insertTeachingUnit(Controller cont) {
         String acronym, title, assessment, description;
         System.out.println("Insert the acronym to be used:");
@@ -63,6 +77,10 @@ public class Main {
         cont.insertTeachingUnit(acronym, title, assessment, description);
     }
 
+    /**
+     * Inserts a new exam call into the system.
+     * @param cont the Controller instance to interact with the model
+     */
     public static void insertExamCall(Controller cont) {
 
         String call, description, course;
@@ -85,6 +103,11 @@ public class Main {
     }
     
     
+    /**
+     * Creates a new statement and returns its ID.
+     * @param cont the Controller instance to interact with the model
+     * @return the ID of the created statement, or -1 if failed
+     */
     public static int createStatement(Controller cont) {
     int idS, error = -1;
     String desc, path, available,enume;
@@ -98,13 +121,13 @@ public class Main {
     desc = Utilities.introducirCadena();
 
     while (level == null) {
-            System.out.println("Enter difficulty (LOW, MEDIUM, HIGH):");
+            System.out.println("Enter difficulty (LOW, AVERAGE, HIGH):");
             enume = Utilities.introducirCadena().toUpperCase();
 
             try {
                 level = Difficulty.valueOf(enume);
             } catch (IllegalArgumentException e) {
-                System.out.println("Invalid option. Please enter LOW, MEDIUM, or HIGH.");
+                System.out.println("Invalid option. Please enter LOW, AVERAGE, or HIGH.");
             }
     }
 
@@ -123,6 +146,10 @@ public class Main {
     }
 }
     
+    /**
+     * Creates a statement with associated teaching units and exam call.
+     * @param cont the Controller instance to interact with the model
+     */
     public static void createStatementWithUnitsAndExamCall(Controller cont) {
     int idS,numUnits,idU,id_s;
     String call,description,course;
@@ -163,6 +190,10 @@ public class Main {
     }
 }
     
+    /**
+     * Consults the exam calls associated with a specific statement.
+     * @param cont the Controller instance to interact with the model
+     */
     public static void consultCalls(Controller cont) {
     int ids;
     Map<String, ExamCall> calls = new TreeMap<>();
@@ -180,6 +211,10 @@ public class Main {
     }
     }
 
+    /**
+     * Views the text document associated with a specific statement.
+     * @param cont the Controller instance to interact with the model
+     */
     public static void viewTextDocument(Controller cont) {
     System.out.println("Enter the id of the Statement to display its description: ");
     int id = Utilities.leerInt();
@@ -195,6 +230,10 @@ public class Main {
     }
 
 
+    /**
+     * Assigns a statement to an exam call.
+     * @param cont the Controller instance to interact with the model
+     */
     public static void assignStatementToExamCall(Controller cont) {
     String callExam, desc, course;
     int idS;
@@ -214,6 +253,10 @@ public class Main {
     System.out.println("It was entered correctly");
     }
 
+    /**
+     * Main method to run the application.
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         int op;
         Controller cont = new Controller();
