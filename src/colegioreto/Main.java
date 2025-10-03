@@ -29,7 +29,7 @@ public class Main {
         System.out.println("3. Create an STATEMENT by adding the UNITS it will refer to. The EXAMCALL for which it is created will also be associated.");
         System.out.println("4. Consult the STATEMENTS in which a specific UNIT is covered.");
         System.out.println("5. Consult in which EXAMCALL a specific STATEMENTS has been used.");
-        System.out.println("6. View the text document associated with a STATEMENTS.");
+        System.out.println("6. View the description associated with a STATEMENTS.");
         System.out.println("7. Assign a STATEMENTS to a EXAMCALL.");
         System.out.println("8. Exit");
         System.out.println("------------------------------------");
